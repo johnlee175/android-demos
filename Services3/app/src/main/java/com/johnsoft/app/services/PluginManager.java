@@ -73,10 +73,18 @@ public final class PluginManager {
         try {
             // every service will bridge from this method, you can hook
             // it for monitor
+            if (parameters.length % 2 != 0) {
+                throw new IllegalArgumentException("Method parameters is not matched with class, object pair.");
+            }
             final Class<?> clazz = classLoader.loadClass(classFullName);
-            final Class<?>[] paramClasses = new Class<?>[parameters.length];
-            for (int i = 0; i < paramClasses.length; ++i) {
-                paramClasses[i] = parameters[i].getClass();
+            final Class<?>[] paramClasses = new Class<?>[parameters.length / 2];
+            final Object[] paramObjects = new Object[parameters.length / 2];
+            for (int i = 0, ci = 0, oi = 0; i < parameters.length; ++i) {
+                if (i % 2 == 0) {
+                    paramClasses[ci++] = (Class<?>)parameters[i];
+                } else {
+                    paramObjects[oi++] = parameters[i];
+                }
             }
             final Method method;
             if (fromDeclaredMethods) {
@@ -85,7 +93,7 @@ public final class PluginManager {
                 method = clazz.getMethod(methodName, paramClasses);
             }
             method.setAccessible(true);
-            return method.invoke(clazz.newInstance(), parameters);
+            return method.invoke(clazz.newInstance(), paramObjects);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

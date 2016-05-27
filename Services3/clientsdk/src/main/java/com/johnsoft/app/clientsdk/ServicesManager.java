@@ -17,6 +17,7 @@
 package com.johnsoft.app.clientsdk;
 
 import com.johnsoft.app.clientsdk.proxys.ChannelManager;
+import com.johnsoft.app.clientsdk.proxys.VerbalManager;
 import com.johnsoft.app.services.IServicesManager;
 
 import android.content.ComponentName;
@@ -35,6 +36,7 @@ public final class ServicesManager {
     private ServicesManager() {}
 
     public static final String CHANNEL_SERVICE = "IChannelService";
+    public static final String VERBAL_SERVICE = "IVerbalService";
 
     private static final byte[] WAIT_LOCK = new byte[0];
     private static final byte[] MAP_LOCK = new byte[0];
@@ -47,6 +49,8 @@ public final class ServicesManager {
                 if (servicesManager != null) {
                     registerService(CHANNEL_SERVICE,
                             new ChannelManager(servicesManager.getService(CHANNEL_SERVICE)));
+                    registerService(VERBAL_SERVICE,
+                            new VerbalManager(servicesManager.getService(VERBAL_SERVICE)));
                 }
             } catch (RemoteException e) {
                 e.printStackTrace();
@@ -85,6 +89,10 @@ public final class ServicesManager {
 
     public static ChannelManager getChannelManager() {
         return (ChannelManager)getService(CHANNEL_SERVICE);
+    }
+
+    public static VerbalManager getVerbalManager() {
+        return (VerbalManager)getService(VERBAL_SERVICE);
     }
 
     public static void waitForServicesReady() {

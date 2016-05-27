@@ -14,14 +14,40 @@
  * See the license for the specific language governing permissions and
  * limitations under the license.
  */
-package com.johnsoft.app.services;
+package com.johnsoft.app.clientsdk.proxys;
+
+import com.johnsoft.app.services.IVerbalService;
+
+import android.os.IBinder;
+import android.os.RemoteException;
 
 /**
  * @author John Kenrinus Lee
- * @version 2016-05-25
+ * @version 2016-05-27
  */
-public class Settings {
-    public static final boolean PLUGIN_FIRST = true;
-    public static boolean channelServiceEnabled = true;
-    public static boolean verbalServiceEnabled = true;
+public class VerbalManager {
+    private final IVerbalService verbalService;
+
+    public VerbalManager() {
+        verbalService = null;
+    }
+
+    public VerbalManager(IBinder iBinder) {
+        if (iBinder != null) {
+            verbalService = IVerbalService.Stub.asInterface(iBinder);
+        } else {
+            verbalService = null;
+        }
+    }
+
+    public String description() {
+        try {
+            if (verbalService != null) {
+                return verbalService.description();
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
 }

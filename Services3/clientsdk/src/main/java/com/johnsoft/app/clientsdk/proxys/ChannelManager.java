@@ -25,8 +25,12 @@ import android.os.RemoteException;
  * @author John Kenrinus Lee
  * @version 2016-05-18
  */
-public final class ChannelManager {
+public class ChannelManager {
     private final IChannelService channelService;
+
+    public ChannelManager() {
+        channelService = null;
+    }
 
     public ChannelManager(IBinder iBinder) {
         if (iBinder != null) {

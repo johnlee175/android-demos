@@ -2,6 +2,7 @@ package com.johnsoft.app.services;
 
 import com.johnsoft.app.services.services.ChannelService;
 import com.johnsoft.app.services.services.ServicesManagerNative;
+import com.johnsoft.app.services.services.VerbalService;
 
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -16,6 +17,7 @@ public class ServicesManagerService extends Service {
     public void onCreate() {
         super.onCreate();
         ChannelService.main();
+        VerbalService.main();
         if (FOREGROUND_SERVICE) {
             startForeground("ServicesManagerService".hashCode(), createNotification());
         }

@@ -20,7 +20,7 @@ import java.io.File;
 
 import com.johnsoft.app.services.App;
 import com.johnsoft.app.services.AssetsToAppFilesDir;
-import com.johnsoft.app.services.IChannelService;
+import com.johnsoft.app.services.IVerbalService;
 import com.johnsoft.app.services.PluginManager;
 import com.johnsoft.app.services.Settings;
 
@@ -29,28 +29,28 @@ import dalvik.system.DexClassLoader;
 
 /**
  * @author John Kenrinus Lee
- * @version 2016-05-18
+ * @version 2016-05-27
  */
-public final class ChannelService extends IChannelService.Stub {
-    public static final String SERVICE_NAME = "IChannelService";
-    private static volatile ChannelService channelService;
+public final class VerbalService extends IVerbalService.Stub {
+    public static final String SERVICE_NAME = "IVerbalService";
+    private static volatile VerbalService verbalService;
 
-    public static ChannelService getDefault() {
-        if (!Settings.channelServiceEnabled) {
+    public static VerbalService getDefault() {
+        if (!Settings.verbalServiceEnabled) {
             return null;
         }
-        if (channelService == null) {
-            synchronized(ChannelService.class) {
-                if (channelService == null) {
-                    channelService = new ChannelService();
+        if (verbalService == null) {
+            synchronized(VerbalService.class) {
+                if (verbalService == null) {
+                    verbalService = new VerbalService();
                 }
             }
         }
-        return channelService;
+        return verbalService;
     }
 
-    private ChannelService() {
-        File apkFile = AssetsToAppFilesDir.copy(App.getApplication(), "channel.apk", false);
+    private VerbalService() {
+        File apkFile = AssetsToAppFilesDir.copy(App.getApplication(), "verbal.apk", false);
         // May be the apk is not in assets, is from net site? Just download it and register.
         PluginManager.registerModule(SERVICE_NAME, apkFile);
     }
@@ -61,17 +61,25 @@ public final class ChannelService extends IChannelService.Stub {
             final DexClassLoader classLoader = PluginManager.getClassLoader(SERVICE_NAME);
             if (classLoader != null) {
                 String result = (String) PluginManager.invokeMethod(classLoader,
-                        "com.johnsoft.app.spi.channel.Channel", "description", true, Object.class, this);
+                        "com.johnsoft.app.spi.verbal.Verbal", "description", true, Object.class, this);
                 if (result != null) {
                     return result;
                 }
             }
         }
-        return ChannelService.class.getSimpleName(); /* default */
+        return VerbalService.class.getSimpleName(); /* default */
+    }
+
+    public String delegate_ChannelService_description() { // dependent service
+        try {
+            return ChannelService.getDefault().description();
+        } catch (Exception e) {
+            return "";
+        }
     }
 
     public static void main() {
-        final ChannelService service = ChannelService.getDefault();
+        final VerbalService service = VerbalService.getDefault();
         ServicesManagerNative.getDefault().addService(SERVICE_NAME, service);
     }
 }

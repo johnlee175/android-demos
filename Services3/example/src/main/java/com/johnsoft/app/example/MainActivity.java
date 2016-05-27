@@ -2,6 +2,7 @@ package com.johnsoft.app.example;
 
 import com.johnsoft.app.clientsdk.ServicesManager;
 import com.johnsoft.app.clientsdk.proxys.ChannelManager;
+import com.johnsoft.app.clientsdk.proxys.VerbalManager;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,8 @@ public class MainActivity extends AppCompatActivity {
                 ServicesManager.waitForServicesReady();
                 ChannelManager channelManager = ServicesManager.getChannelManager();
                 System.err.println(">>>>>>>>>>>>>>>>>>>>" + channelManager.description());
+                VerbalManager verbalManager = ServicesManager.getVerbalManager();
+                System.err.println(">>>>>>>>>>>>>>>>>>>>" + verbalManager.description());
             }
         }.start();
     }

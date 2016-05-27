@@ -1,1 +1,1 @@
-include ':app', ':example', ':clientsdk', ':spi'
+include ':app', ':example', ':clientsdk', ':spi-verbal', ':spi-channel'

@@ -14,14 +14,16 @@
  * See the license for the specific language governing permissions and
  * limitations under the license.
  */
-package com.johnsoft.app.services;
+package com.johnsoft.app.spi.channel;
 
 /**
  * @author John Kenrinus Lee
- * @version 2016-05-25
+ * @version 2016-05-27
  */
-public class Settings {
-    public static final boolean PLUGIN_FIRST = true;
-    public static boolean channelServiceEnabled = true;
-    public static boolean verbalServiceEnabled = true;
+public class Channel {
+    public String description(Object channelService) {
+        ChannelServiceProxy proxy = new ChannelServiceProxy(channelService);
+        System.out.println(proxy);
+        return "49958200954-2993-59992-58882999402995X";
+    }
 }
