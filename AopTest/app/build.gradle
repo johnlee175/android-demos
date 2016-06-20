@@ -21,52 +21,64 @@ android {
 dependencies {
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile "org.aspectj:aspectjrt:${aspectj_version}"
+    compile files('libs/android-async-http-1.4.9.jar')
+    compile files('libs/httpclient-4.3.6.jar')
 }
-
 
 import org.aspectj.bridge.IMessage
 import org.aspectj.bridge.MessageHandler
 import org.aspectj.tools.ajc.Main
 
-final def log = project.logger
-final def variants = project.android.applicationVariants
-
-variants.all { variant ->
+android.applicationVariants.all { variant ->
     if (!variant.buildType.isDebuggable()) {
-        log.debug("Skipping non-debuggable build type '${variant.buildType.name}'.")
+        logger.info("Skipping non-debuggable build type '${variant.buildType.name}'.")
         return;
     }
 
     JavaCompile javaCompile = variant.javaCompile
-    javaCompile.doLast {
-        String[] args = ["-showWeaveInfo",
-                         "-" + project.android.compileOptions.targetCompatibility.toString(),
-                         "-inpath", javaCompile.destinationDir.toString(),
-                         "-aspectpath", javaCompile.classpath.asPath,
-                         "-d", javaCompile.destinationDir.toString(),
-                         "-classpath", javaCompile.classpath.asPath,
-                         "-bootclasspath", project.android.bootClasspath.join(File.pathSeparator)]
-        log.debug "ajc args: " + Arrays.toString(args)
-
-        MessageHandler handler = new MessageHandler(true);
-        new Main().run(args, handler);
-        for (IMessage message : handler.getMessages(null, true)) {
-            switch (message.getKind()) {
-                case IMessage.ABORT:
-                case IMessage.ERROR:
-                case IMessage.FAIL:
-                    log.error message.message, message.thrown
-                    break;
-                case IMessage.WARNING:
-                    log.warn message.message, message.thrown
-                    break;
-                case IMessage.INFO:
-                    log.info message.message, message.thrown
-                    break;
-                case IMessage.DEBUG:
-                    log.debug message.message, message.thrown
-                    break;
+    javaCompile.doLast(new Action<Task>() {
+        @Override
+        void execute(Task task) {
+            MessageHandler handler = new MessageHandler(true)
+            String[] args = ["-showWeaveInfo",
+                             "-1.5",
+                             "-inpath", javaCompile.destinationDir.toString(),
+                             "-d", javaCompile.destinationDir.toString(),
+                             "-aspectpath", javaCompile.destinationDir.toString(),
+                             "-classpath", javaCompile.classpath.asPath,
+                             "-bootclasspath", android.bootClasspath.join(File.pathSeparator)]
+            runAjc(args, handler)
+            File appLibs = new File(projectDir, "libs");
+            File appAjcLibs = new File(projectDir, "ajc-libs");
+            if (!appAjcLibs.exists()) {
+                appAjcLibs.mkdirs()
+                logger.info "run ajc from libs/*.jar to ajc-libs/*.jar ..."
+                appLibs.listFiles().collect { file ->
+                    args[3] = file.absolutePath
+                    args[4] = "-outjar"
+                    args[5] = new File(appAjcLibs, file.name).absolutePath
+                    runAjc(args, handler)
+                }
             }
         }
-    }
+
+        private void runAjc(String[] args, MessageHandler handler) {
+            logger.info "ajc args: " + Arrays.toString(args)
+            new Main().run(args, handler)
+            for (IMessage message : handler.getMessages(null, true)) {
+                switch (message.getKind()) {
+                    case IMessage.ABORT:
+                    case IMessage.FAIL:
+                    case IMessage.ERROR:
+                    case IMessage.WARNING:
+                        logger.error message.message, message.thrown
+                        break;
+                    case IMessage.INFO:
+                    case IMessage.DEBUG:
+                        logger.info message.message, message.thrown
+                        break;
+                }
+            }
+        }
+    })
 }

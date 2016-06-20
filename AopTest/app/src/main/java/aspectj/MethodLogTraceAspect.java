@@ -8,11 +8,12 @@ import org.aspectj.lang.annotation.Pointcut;
 import android.util.Log;
 
 /**
- * Created by lingyi.mly on 2016/5/27.
+ * @author John Kenrinus Lee
+ * @version 2016-06-19
  */
 @Aspect
 public class MethodLogTraceAspect {
-    private static final String TAG = "Trace";
+    private static final String TAG = "LogTrace";
 
     @Pointcut("execution(void com..*Activity.onCreate(android.os.Bundle))")
     public void pointcut_Activity_onCreate_Execution() {}
