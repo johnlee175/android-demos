@@ -21,8 +21,12 @@ android {
 dependencies {
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile "org.aspectj:aspectjrt:${aspectj_version}"
-    compile files('libs/android-async-http-1.4.9.jar')
-    compile files('libs/httpclient-4.3.6.jar')
+    // Use libs/*.jar first, after the first build, the ajc-libs will be created,
+    // and you can choose to copy ajc-libs/*.jar to libs/, or comment the following two line, add ajc-libs dependencies.
+//    compile files('libs/android-async-http-1.4.9.jar')
+//    compile files('libs/httpclient-4.3.6.jar')
+    compile files('ajc-libs/android-async-http-1.4.9.jar')
+    compile files('ajc-libs/httpclient-4.3.6.jar')
 }
 
 import org.aspectj.bridge.IMessage
@@ -61,7 +65,12 @@ android.applicationVariants.all { variant ->
                 }
             }
         }
-
+        // If you see such a description:
+        // "advice defined in aspectj.XXXAspect has not been applied [Xlint:adviceDidNotMatch]",
+        // may be LogLevel.INFO's message will be helpful, they'll tell you which classes woven and why print adviceDidNotMatch.
+        // For the message which be print by "logger.info" show, just open Preferences or Settings page, and follow:
+        // "Build, Execution, Deployment" -> "Compiler" -> "Command-line Options",
+        // now input "--info" or "--debug" and click "Apply" button;
         private void runAjc(String[] args, MessageHandler handler) {
             logger.info "ajc args: " + Arrays.toString(args)
             new Main().run(args, handler)
