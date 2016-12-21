@@ -22,7 +22,7 @@ import android.widget.TextView;
  * @version 2016-12-21
  */
 public class UserAdapter extends BaseAdapter implements IUserScorePresenter.IUsersCallback {
-    private final ArrayList<Pair<String, String>> usernames = new ArrayList<>();
+    private final ArrayList<Pair<String, String>> useridnames = new ArrayList<>();
     private final WeakReference<Context> context;
 
     public UserAdapter(Context context) {
@@ -36,12 +36,12 @@ public class UserAdapter extends BaseAdapter implements IUserScorePresenter.IUse
 
     @Override
     public int getCount() {
-        return usernames.size();
+        return useridnames.size();
     }
 
     @Override
     public Pair<String, String> getItem(int position) {
-        return usernames.get(position);
+        return useridnames.get(position);
     }
 
     @Override
@@ -75,8 +75,8 @@ public class UserAdapter extends BaseAdapter implements IUserScorePresenter.IUse
     }
 
     @Override
-    public void onUsernames(List<Pair<String, String>> usernames) {
-        this.usernames.addAll(usernames);
+    public void onUsernames(List<Pair<String, String>> useridnames) {
+        this.useridnames.addAll(useridnames);
         notifyDataSetChanged();
     }
 }

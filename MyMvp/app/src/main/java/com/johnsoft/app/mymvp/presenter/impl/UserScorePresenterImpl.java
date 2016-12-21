@@ -70,14 +70,14 @@ public class UserScorePresenterImpl extends AbstractBasePresenter  implements IU
     @Override
     public void fetchUsernamesAsync(final IUsersCallback callback) {
         WeakReference<IUsersCallback> callbackRef = new WeakReference<>(callback);
-        final ArrayList<Pair<String, String>> usernames = new ArrayList<>();
+        final ArrayList<Pair<String, String>> useridnames = new ArrayList<>();
         Observable.just(callbackRef)
                 .observeOn(Schedulers.io())
                 .map(new Func1<WeakReference<IUsersCallback>, WeakReference<IUsersCallback>>() {
                     @Override
                     public WeakReference<IUsersCallback> call(WeakReference<IUsersCallback> callback) {
                         for (User user : userService.fetchUsersFromNet()) {
-                            usernames.add(new Pair<>(user.getId(), user.getName()));
+                            useridnames.add(new Pair<>(user.getId(), user.getName()));
                         }
                         return callback;
                     }
@@ -88,7 +88,7 @@ public class UserScorePresenterImpl extends AbstractBasePresenter  implements IU
                     public void call(WeakReference<IUsersCallback> callback) {
                         IUsersCallback usersCallback = callback.get();
                         if (usersCallback != null) {
-                            usersCallback.onUsernames(usernames);
+                            usersCallback.onUsernames(useridnames);
                         }
                     }
                 });

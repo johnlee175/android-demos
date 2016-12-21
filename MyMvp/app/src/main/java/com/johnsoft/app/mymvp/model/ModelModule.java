@@ -15,15 +15,15 @@ import dagger.Provides;
 
 @Module
 public class ModelModule {
-    @Provides
     @Singleton
-    public static IUserModel provideIUserModel() {
+    @Provides
+    public IUserModel provideIUserModel() {
         return new UserService().initialize();
     }
 
-    @Provides
     @Singleton
-    public static IScoreModel provideIScoreModel() {
+    @Provides
+    public IScoreModel provideIScoreModel() {
         return new ScoreService().initialize();
     }
 }
