@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <ImageView android:id="@+id/avatar"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1"
+                  android:text="name"/>
+        <EditText android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="3"
+                  android:id="@+id/name"
+                  android:enabled="false"
+                  android:text="placeholder"/>
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1"
+                  android:text="description"/>
+        <EditText android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="3"
+                  android:id="@+id/description"
+                  android:enabled="false"
+                  android:text="placeholder"/>
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1"
+                  android:text="term"/>
+        <EditText android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="3"
+                  android:id="@+id/term"
+                  android:enabled="false"
+                  android:text="placeholder"/>
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1"
+                  android:text="score"/>
+        <EditText android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="3"
+                  android:id="@+id/score"
+                  android:enabled="true"
+                  android:text="placeholder"/>
+    </LinearLayout>
+
+    <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+    android:id="@+id/save" android:text="save"/>
+
+    <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+    android:id="@+id/vs" android:text="vs others"/>
+
+</LinearLayout>
