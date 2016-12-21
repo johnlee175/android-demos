@@ -3,10 +3,10 @@ package com.johnsoft.app.mymvp.model;
 import java.io.RandomAccessFile;
 
 import com.google.gson.Gson;
+import com.johnsoft.app.mymvp.model.utils.SqliteHelper;
 
 import android.content.ContentResolver;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteOpenHelper;
 import okhttp3.OkHttpClient;
 
 /**
@@ -20,7 +20,7 @@ public interface IBaseModel {
     Gson getGson();
     OkHttpClient getOkHttpClient();
     ContentResolver getContentResolver();
-    SQLiteOpenHelper getDatabaseHelper();
+    SqliteHelper getDatabaseHelper();
     RandomAccessFile getFile(String path);
     SharedPreferences getSharedPreferences(String name);
 }

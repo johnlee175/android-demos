@@ -20,8 +20,8 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.squareup.okhttp3:okhttp:3.3.1'
+    compile 'com.j256.ormlite:ormlite-android:5.0'
     compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'io.reactivex:rxjava:1.1.6'
     compile ('com.github.johnlee175:rxbus:1.0.2') {
         exclude group:'io.reactivex', module:'rxandroid'
         exclude group:'io.reactivex', module:'rxjava'

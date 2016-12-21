@@ -4,10 +4,10 @@ import java.io.RandomAccessFile;
 
 import com.google.gson.Gson;
 import com.johnsoft.app.mymvp.model.IBaseModel;
+import com.johnsoft.app.mymvp.model.utils.SqliteHelper;
 
 import android.content.ContentResolver;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteOpenHelper;
 import okhttp3.OkHttpClient;
 
 /**
@@ -32,7 +32,7 @@ public abstract class AbstractBaseService implements IBaseModel {
     }
 
     @Override
-    public SQLiteOpenHelper getDatabaseHelper() {
+    public SqliteHelper getDatabaseHelper() {
         return null;
     }
 

@@ -20,7 +20,7 @@ import retrofit2.http.Query;
  */
 
 public class UserService extends AbstractBaseService implements IUserModel {
-    private static final String BASE_URL = "http://url/";
+    private static final String BASE_URL = "http://url/user/";
     private UserFetcher userFetcher;
 
     @Override
@@ -40,7 +40,7 @@ public class UserService extends AbstractBaseService implements IUserModel {
     }
 
     @Override
-    public User fetchUserFromNet(String userId) {
+    public User fetchUserFromNet(String userId) { // you should cache request result to local storage
         final Call<User> call = userFetcher.fetchUserFromNet(userId);
         try {
             final Response<User> response = call.execute();
@@ -56,7 +56,7 @@ public class UserService extends AbstractBaseService implements IUserModel {
     }
 
     @Override
-    public List<User> fetchUsersFromNet() {
+    public List<User> fetchUsersFromNet() { // you should cache request result to local storage
         final Call<List<User>> call = userFetcher.fetchUsersFromNet();
         try {
             final Response<List<User>> response = call.execute();
@@ -75,13 +75,13 @@ public class UserService extends AbstractBaseService implements IUserModel {
         @Headers({
                 "Content-Type: application/json;charset=utf-8",
         })
-        @GET("/user_search.php")
+        @GET("/search.php")
         Call<User> fetchUserFromNet(@Query("user_id") String userId);
 
         @Headers({
                 "Content-Type: application/json;charset=utf-8",
         })
-        @GET("/user_search.php")
+        @GET("/search.php")
         Call<List<User>> fetchUsersFromNet();
     }
 }

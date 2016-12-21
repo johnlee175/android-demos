@@ -1,8 +1,10 @@
 package com.johnsoft.app.mymvp.model.impl;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import com.google.gson.reflect.TypeToken;
+import com.j256.ormlite.dao.Dao;
 import com.johnsoft.app.mymvp.model.IScoreModel;
 import com.johnsoft.app.mymvp.model.pojo.Score;
 
@@ -12,8 +14,11 @@ import com.johnsoft.app.mymvp.model.pojo.Score;
  */
 
 public class ScoreService extends AbstractBaseService implements IScoreModel {
+    private Dao<Score, Integer> scoreDao;
+
     @Override
     public ScoreService initialize() {
+        scoreDao = getDatabaseHelper().getScoreDao();
         return this;
     }
 
@@ -24,7 +29,12 @@ public class ScoreService extends AbstractBaseService implements IScoreModel {
 
     @Override
     public boolean saveScoreToSqlite(Score score) {
-        return false;
+        try {
+            return scoreDao.update(score) > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
@@ -34,21 +44,37 @@ public class ScoreService extends AbstractBaseService implements IScoreModel {
 
     @Override
     public List<Score> getAllScoreFromSqlite() {
-        return null;
+        try {
+            return scoreDao.queryForAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
     public List<Score> searchScoreFromSqliteByTerm(String term) {
-        return null;
+        try {
+            return scoreDao.queryForEq("term", term);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
     public List<Score> searchScoreFromSqliteByUserId(String userId) {
-        return null;
+        try {
+            return scoreDao.queryForEq("user_id", userId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
     public Score searchScoreFromSqliteBy(String userId, String term) {
+        // not implement yet
         return null;
     }
 }
