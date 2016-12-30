@@ -30,6 +30,8 @@ import java.security.NoSuchAlgorithmException;
 import com.google.gson.Gson;
 
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import okhttp3.Headers;
 import okhttp3.OkHttpClient;
@@ -140,11 +142,179 @@ public class VersionManager {
     }
 
     public static String getAndroidDeviceInfo() {
-        //        return Build.FINGERPRINT;
+//        return Build.FINGERPRINT;
         return Build.BRAND + " " + Build.MANUFACTURER + " " + Build.MODEL + " " + Build.ID;
     }
 
     public static String getAndroidVersionInfo() {
         return "android-" + Build.VERSION.RELEASE + " api-" + String.valueOf(Build.VERSION.SDK_INT);
+    }
+
+    public static String getVersionName(Context context) {
+//        return BuildConfig.VERSION_NAME;
+        try {
+            PackageInfo pinfo = context.getPackageManager()
+                    .getPackageInfo(context.getPackageName(),
+                            PackageManager.GET_CONFIGURATIONS);
+            return pinfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return "";
+    }
+
+    public static int getVersionCode(Context context) {
+//        return BuildConfig.VERSION_CODE;
+        try {
+            PackageInfo pinfo = context.getPackageManager()
+                    .getPackageInfo(context.getPackageName(),
+                            PackageManager.GET_CONFIGURATIONS);
+            return pinfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return -1;
+    }
+
+    private static volatile VersionParts sVersionParts;
+
+    public static VersionParts getVersionParts(Context context) {
+        if (sVersionParts == null) {
+            synchronized (VersionParts.class) {
+                if (sVersionParts == null) {
+                    // format like: 1.0.fc56486_develop@20161208-090311-441&a45e60bf4695$3121184
+                    String versionName = getVersionName(context);
+                    if (versionName == null || versionName.trim().isEmpty()) {
+                        versionName = BuildConfig.VERSION_NAME;
+                        if (versionName.trim().isEmpty()) {
+                            sVersionParts = new VersionParts();
+                            return sVersionParts;
+                        }
+                    }
+                    final String product = "robokit";
+                    String[] temps = versionName.split("\\.");
+                    final String majorNumber = temps[0];
+                    final String minorNumber = temps[1];
+                    int idx1 = temps[2].indexOf('_');
+                    final String lastCommitId = temps[2].substring(0, idx1);
+                    int idx2 = temps[2].indexOf('@');
+                    final String branch = temps[2].substring(idx1 + 1, idx2);
+                    idx1 = temps[2].indexOf('&');
+                    final String strDateTime = temps[2].substring(idx2 + 1, idx1);
+                    idx2 = temps[2].indexOf('$');
+                    final String buildMachineAddress = temps[2].substring(idx1 + 1, idx2);
+                    final String mappingCode = temps[2].split("\\$")[1];
+                    sVersionParts = new VersionParts(majorNumber, minorNumber, product, branch, lastCommitId,
+                            strDateTime, buildMachineAddress, mappingCode,
+                            BuildConfig.BUILD_TYPE, BuildConfig.FLAVOR,
+                            getAndroidVersionInfo(), getAndroidDeviceInfo());
+                }
+            }
+        }
+        return sVersionParts;
+    }
+
+    public static final class VersionParts {
+        public final String majorNumber;
+        public final String minorNumber;
+        public final String product;
+        public final String branch;
+        public final String lastCommitId;
+        public final String strDateTime;
+        public final String buildMachineAddress;
+        public final String mappingCode;
+        public final String buildType;
+        public final String flavor;
+        public final String androidVersion;
+        public final String androidDevice;
+
+        private VersionParts() {
+            majorNumber = "";
+            minorNumber = "";
+            product = "";
+            branch = "";
+            lastCommitId = "";
+            strDateTime = "";
+            buildMachineAddress = "";
+            mappingCode = "";
+            buildType = "";
+            flavor = "";
+            androidVersion = "";
+            androidDevice = "";
+        }
+
+        private VersionParts(String majorNumber, String minorNumber, String product, String branch,
+                             String lastCommitId, String strDateTime, String buildMachineAddress,
+                             String mappingCode, String buildType, String flavor,
+                             String androidVersion, String androidDevice) {
+            if (majorNumber == null) {
+                majorNumber = "";
+            }
+            this.majorNumber = majorNumber;
+            if (minorNumber == null) {
+                minorNumber = "";
+            }
+            this.minorNumber = minorNumber;
+            if (product == null) {
+                product = "";
+            }
+            this.product = product;
+            if (branch == null) {
+                branch = "";
+            }
+            this.branch = branch;
+            if (lastCommitId == null) {
+                lastCommitId = "";
+            }
+            this.lastCommitId = lastCommitId;
+            if (strDateTime == null) {
+                strDateTime = "";
+            }
+            this.strDateTime = strDateTime;
+            if (buildMachineAddress == null) {
+                buildMachineAddress = "";
+            }
+            this.buildMachineAddress = buildMachineAddress;
+            if (mappingCode == null) {
+                mappingCode = "";
+            }
+            this.mappingCode = mappingCode;
+            if (buildType == null) {
+                buildType = "";
+            }
+            this.buildType = buildType;
+            if (flavor == null) {
+                flavor = "";
+            }
+            this.flavor = flavor;
+            if (androidVersion == null) {
+                androidVersion = "";
+            }
+            this.androidVersion = androidVersion;
+            if (androidDevice == null) {
+                androidDevice = "";
+            }
+            this.androidDevice = androidDevice;
+        }
+
+        @Override
+        public String toString() {
+            return "VersionParts{"
+                    + "majorNumber='" + majorNumber + '\''
+                    + ", minorNumber='" + minorNumber + '\''
+                    + ", product='" + product + '\''
+                    + ", branch='" + branch + '\''
+                    + ", lastCommitId='" + lastCommitId + '\''
+                    + ", strDateTime='" + strDateTime + '\''
+                    + ", buildMachineAddress='" + buildMachineAddress + '\''
+                    + ", mappingCode='" + mappingCode + '\''
+                    + ", buildType='" + buildType + '\''
+                    + ", flavor='" + flavor + '\''
+                    + ", androidVersion='" + androidVersion + '\''
+                    + ", androidDevice='" + androidDevice + '\''
+                    + '}';
+        }
     }
 }

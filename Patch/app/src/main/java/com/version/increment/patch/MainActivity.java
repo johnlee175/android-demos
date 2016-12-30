@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
                             try {
                                 String data = FileUtils.readFileToString(config, FileUtils.UTF_8);
                                 String[] items = data.split("&");
+                                // call startService in application instread
                                 startService(VersionService.getIntent(getApplicationContext(), items[0], items[1],
                                         items[2], items[3], items[4], Boolean.valueOf(items[5]),
                                         Boolean.valueOf(items[6]), Boolean.valueOf(items[7]),
@@ -37,5 +38,6 @@ public class MainActivity extends AppCompatActivity {
                 }.start();
             }
         });
+        VersionService.showVersionNotification(this);
     }
 }

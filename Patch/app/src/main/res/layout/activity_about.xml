@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <Button android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/check_version_update"
+            android:text="检查版本更新"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+    <TextView android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:id="@+id/current_version_info"
+              android:text="关于版本消息"
+              android:textSize="22sp"
+              android:textStyle="bold"/>
+    <TextView android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:id="@+id/version_detail_list"
+              android:textSize="18sp"/>
+
+</LinearLayout>

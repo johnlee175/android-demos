@@ -25,6 +25,8 @@ import com.google.gson.GsonBuilder;
 
 import android.app.AlarmManager;
 import android.app.IntentService;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -36,6 +38,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.Window;
 import android.view.WindowManager;
@@ -78,6 +81,34 @@ public class VersionService extends IntentService {
         intent.putExtra("preparePatch", preparePatch);
         intent.putExtra("daemon", daemon);
         return intent;
+    }
+
+    public static void showVersionNotification(Context appContext) {
+        final SharedPreferences sp = getBackupStorage(appContext);
+        final String peekDataJson = sp.getString("PeekData", "");
+        final String fetchDataJson = sp.getString("FetchData", "");
+        final String patchMd5 = sp.getString("PatchMd5", "");
+        if (!peekDataJson.trim().isEmpty()
+                && !fetchDataJson.trim().isEmpty()
+                && !patchMd5.trim().isEmpty()) {
+            appContext = appContext.getApplicationContext();
+            final NotificationCompat.Builder builder = new NotificationCompat.Builder(appContext);
+            builder.setAutoCancel(true);
+            builder.setWhen(System.currentTimeMillis());
+            builder.setShowWhen(true);
+            builder.setOnlyAlertOnce(true);
+            builder.setOngoing(false);
+            builder.setTicker("有版本可以更新啦, 是否又蠢蠢欲动了");
+            builder.setSmallIcon(R.mipmap.ic_launcher);
+            builder.setContentTitle("戳我进行版本更新");
+            builder.setContentText("有版本可以更新啦, 是否又蠢蠢欲动了");
+            builder.setContentIntent(PendingIntent.getActivity(appContext, "VersionService".hashCode(),
+                    new Intent(appContext, VersionAboutActivity.class), PendingIntent.FLAG_UPDATE_CURRENT));
+            final Notification notification = builder.build();
+            final NotificationManager notificationManager = (NotificationManager)appContext
+                    .getSystemService(NOTIFICATION_SERVICE);
+            notificationManager.notify("VersionService".hashCode(), notification);
+        }
     }
 
     private static SharedPreferences getBackupStorage(Context context) {
@@ -357,6 +388,7 @@ public class VersionService extends IntentService {
         }
 
         if (applyPatch) {
+            saveData(getBackupStorage(this), "", "", "");
             if (startAfterInstall) {
                 Intent intent = new Intent(getApplicationContext(), StartReceiver.class);
                 intent.setAction("action.start.after.install");
