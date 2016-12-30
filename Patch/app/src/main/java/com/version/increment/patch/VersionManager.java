@@ -30,6 +30,7 @@ import java.security.NoSuchAlgorithmException;
 import com.google.gson.Gson;
 
 import android.content.Context;
+import android.os.Build;
 import okhttp3.Headers;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
@@ -136,5 +137,14 @@ public class VersionManager {
             throw new IllegalArgumentException("whatIs: Invalid pathMd5!");
         }
         return pathMd5.path.split("/")[0];
+    }
+
+    public static String getAndroidDeviceInfo() {
+        //        return Build.FINGERPRINT;
+        return Build.BRAND + " " + Build.MANUFACTURER + " " + Build.MODEL + " " + Build.ID;
+    }
+
+    public static String getAndroidVersionInfo() {
+        return "android-" + Build.VERSION.RELEASE + " api-" + String.valueOf(Build.VERSION.SDK_INT);
     }
 }

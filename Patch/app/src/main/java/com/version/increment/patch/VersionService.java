@@ -122,6 +122,8 @@ public class VersionService extends IntentService {
             peekData.forwardStep = intent.getBooleanExtra("forwardStep", true);
             peekData.preparePatch = intent.getBooleanExtra("preparePatch", true);
             peekData.apkMd5 = VersionManager.md5(oldApk);
+            peekData.device = VersionManager.getAndroidDeviceInfo();
+            peekData.deviceVersion = VersionManager.getAndroidVersionInfo();
             final boolean daemon = intent.getBooleanExtra("daemon", true);
             final boolean startAfterInstall = false; // the app install finish view has open button
             final int startDelayAfterInstalling = intent.getIntExtra("startDelayAfterInstalling", 5000);

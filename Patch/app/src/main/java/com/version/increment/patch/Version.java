@@ -30,10 +30,14 @@ import retrofit2.http.Streaming;
  * @version 2016-11-23
  */
 public interface Version {
+    // build type just base on release (not debug)
     class PeekData {
         public String product;
         public String flavor;
         public String branch;
+        public String device; // android or ios, if android, set android device type
+        @SerializedName("device_version")
+        public String deviceVersion; // if android, set android version
         @SerializedName("build_date")
         public String buildDate;
         @SerializedName("apk_md5")
@@ -53,6 +57,8 @@ public interface Version {
                     "product='" + product + '\'' +
                     ", flavor='" + flavor + '\'' +
                     ", branch='" + branch + '\'' +
+                    ", device='" + device + '\'' +
+                    ", deviceVersion='" + deviceVersion + '\'' +
                     ", buildDate='" + buildDate + '\'' +
                     ", apkMd5='" + apkMd5 + '\'' +
                     ", mappingCode='" + mappingCode + '\'' +
@@ -70,9 +76,7 @@ public interface Version {
             if (o == null || getClass() != o.getClass()) {
                 return false;
             }
-
             PeekData peekData = (PeekData) o;
-
             if (upToDate != peekData.upToDate) {
                 return false;
             }
@@ -91,6 +95,13 @@ public interface Version {
             if (branch != null ? !branch.equals(peekData.branch) : peekData.branch != null) {
                 return false;
             }
+            if (device != null ? !device.equals(peekData.device) : peekData.device != null) {
+                return false;
+            }
+            if (deviceVersion != null ? !deviceVersion.equals(peekData.deviceVersion)
+                    : peekData.deviceVersion != null) {
+                return false;
+            }
             if (buildDate != null ? !buildDate.equals(peekData.buildDate) : peekData.buildDate != null) {
                 return false;
             }
@@ -98,7 +109,6 @@ public interface Version {
                 return false;
             }
             return mappingCode != null ? mappingCode.equals(peekData.mappingCode) : peekData.mappingCode == null;
-
         }
 
         @Override
@@ -106,6 +116,8 @@ public interface Version {
             int result = product != null ? product.hashCode() : 0;
             result = 31 * result + (flavor != null ? flavor.hashCode() : 0);
             result = 31 * result + (branch != null ? branch.hashCode() : 0);
+            result = 31 * result + (device != null ? device.hashCode() : 0);
+            result = 31 * result + (deviceVersion != null ? deviceVersion.hashCode() : 0);
             result = 31 * result + (buildDate != null ? buildDate.hashCode() : 0);
             result = 31 * result + (apkMd5 != null ? apkMd5.hashCode() : 0);
             result = 31 * result + (mappingCode != null ? mappingCode.hashCode() : 0);
@@ -169,14 +181,11 @@ public interface Version {
             if (o == null || getClass() != o.getClass()) {
                 return false;
             }
-
             PathMd5 pathMd5 = (PathMd5) o;
-
             if (path != null ? !path.equals(pathMd5.path) : pathMd5.path != null) {
                 return false;
             }
             return md5 != null ? md5.equals(pathMd5.md5) : pathMd5.md5 == null;
-
         }
 
         @Override
