@@ -1,0 +1,34 @@
+group 'com.johnsoft.test'
+version '1.0.0'
+
+apply plugin: 'java'
+apply plugin: 'antlr'
+
+sourceCompatibility = JavaVersion.VERSION_1_7
+targetCompatibility = JavaVersion.VERSION_1_7
+
+jar {
+    from {
+        configurations.intoJarDeps.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+generateGrammarSource {
+    outputDirectory = new File((File) outputDirectory, 'org/ter/antlr4')
+    arguments += ['-listener', '-visitor', '-long-messages', '-package', 'org.ter.antlr4']
+}
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    intoJarDeps
+}
+
+dependencies {
+    antlr 'org.antlr:antlr4:4.5'
+    intoJarDeps 'org.antlr:antlr4-runtime:4.5'
+    testCompile 'org.apache.commons:commons-lang3:3.2'
+    testCompile 'junit:junit:4.12'
+}

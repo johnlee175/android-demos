@@ -1,0 +1,62 @@
+package com.johnsoft.test.pack;
+
+if @"Conditions.test1()" {
+Record1 = {
+    type = "tts";
+    when = "1329488591111";
+    duration = "1000";
+    data = "abc, def";
+};
+} else if @"Conditions.test2()" {
+Record1 = {
+    type = "noop";
+    when = "1329488591111";
+    duration = "1500";
+    data = "xyz, def";
+};
+} else {
+Record1 = {
+    type = "rec";
+    when = "1329488591111";
+    duration = "2000";
+    data = "xyz, 123";
+};
+}
+Record2 = {
+    type = "channel";
+    when = "1325029993211";
+    duration = "5000";
+};
+Record3 = [
+    @Record1,
+    { 
+        type = "rec";
+        when = "13294844291111";
+        duration = @"Evaluators.duration1()";
+    }, @Record4, {
+        type = "tts";
+        when = "13294885442311";
+        duration = "1000";
+    }
+];
+Record4 = [
+    @Record5,
+    { 
+        type = "rec";
+        when = "13294844291666";
+        duration = "1000";
+        data = "this is a test";
+    },
+];
+Record5 = [
+    @Record2,
+    {
+        type = "prepare";
+        when = "13299921166";
+        duration = "2010";
+        data = "this is another test";
+    }
+];
+
+main:
+@Record3 => @Record4;

@@ -1,0 +1,155 @@
+AA2 = {
+	when = "2745";
+	duration = "0";
+	type = "touch";
+	code = "0";
+	fingerprint = "TouchTrigger#fromTouch";
+
+};
+AA5 = {
+	when = "9552";
+	duration = "0";
+	type = "voice";
+	code = "0";
+	fingerprint = "VoiceTrigger#fromVoice";
+
+};
+AA8 = {
+	when = "613087";
+	duration = "0";
+	type = "voice";
+	code = "2";
+	fingerprint = "VoiceTrigger#fromVoice";
+
+};
+AA12 = {
+	when = "12";
+	duration = "0";
+	type = "voice";
+	code = "0";
+	fingerprint = "VoiceTrigger#fromVoice";
+
+};
+AA15 = {
+	when = "602664";
+	duration = "0";
+	type = "voice";
+	code = "0";
+	fingerprint = "VoiceTrigger#fromVoice";
+
+};
+AA18 = {
+	when = "1203031";
+	duration = "0";
+	type = "voice";
+	code = "2";
+	fingerprint = "VoiceTrigger#fromVoice";
+
+};
+AA21 = {
+	when = "2203492";
+	duration = "0";
+	type = "voice";
+	code = "0";
+	fingerprint = "VoiceTrigger#fromVoice";
+
+};
+AA25 = {
+	when = "16";
+	duration = "0";
+	type = "touch";
+	code = "1";
+	fingerprint = "TouchTrigger#fromTouch";
+
+};
+AA29 = {
+	when = "807431";
+	duration = "0";
+	type = "voice";
+	code = "1";
+	fingerprint = "VoiceTrigger#fromVoice";
+
+};
+AA0 = [
+	@AA2, 	{
+		when = "9495";
+		duration = "0";
+		type = "text";
+		code = "0";
+		fingerprint = "TextVerifier#showText";
+
+	}, 	@AA5, 	{
+		when = "612987";
+		duration = "0";
+		type = "tts";
+		code = "0";
+		fingerprint = "TtsVerifier#speak";
+
+	}, 	@AA8, 	{
+		when = "1619766";
+		duration = "0";
+		type = "media";
+		code = "0";
+		fingerprint = "MediaVerifier#playMp3";
+
+	}
+];
+AA10 = [
+	@AA12, 	{
+		when = "602624";
+		duration = "0";
+		type = "tts";
+		code = "0";
+		fingerprint = "TtsVerifier#speak";
+
+	}, 	@AA15, 	{
+		when = "1203010";
+		duration = "0";
+		type = "tts";
+		code = "0";
+		fingerprint = "TtsVerifier#speak";
+
+	}, 	@AA18, 	{
+		when = "2203471";
+		duration = "0";
+		type = "media";
+		code = "0";
+		fingerprint = "MediaVerifier#playMp3";
+
+	}, 	@AA21, 	{
+		when = "2808730";
+		duration = "0";
+		type = "tts";
+		code = "0";
+		fingerprint = "TtsVerifier#speak";
+
+	}
+];
+AA23 = [
+	@AA25, 	{
+		when = "204830";
+		duration = "0";
+		type = "system";
+		code = "0";
+		fingerprint = "SystemDeviceVerifier#modifySettings";
+
+	}, 	{
+		when = "807393";
+		duration = "0";
+		type = "tts";
+		code = "0";
+		fingerprint = "TtsVerifier#speak";
+
+	}, 	@AA29, 	{
+		when = "807540";
+		duration = "0";
+		type = "system";
+		code = "1";
+		fingerprint = "SystemDeviceVerifier#changeLightColor";
+
+	}
+];
+
+main:
+ @AA0 => @AA10 => @AA23 ;
+

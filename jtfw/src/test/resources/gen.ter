@@ -1,0 +1,100 @@
+package com.johnsoft.test.pack;
+
+AA2 = {
+	when = "11";
+	duration = "1150332";
+	type = "rec";
+	code = "22";
+	data = "LoyeMrNInotognmeoZDi, 34610, 93217";
+
+};
+AA8 = {
+	when = "0";
+	duration = "6493723";
+	type = "press";
+	code = "4";
+
+};
+AA13 = {
+	when = "5213";
+	duration = "8050113";
+	type = "rec";
+	code = "5";
+	data = "OAIJOxedwdoDGYDtoBSi, 51930, 56414";
+
+};
+AA17 = {
+	when = "0";
+	duration = "6420931";
+	type = "rec";
+	code = "5";
+	data = "RSdKaLGmKhmHAfRMKtNy, 19840, 09257";
+
+};
+AA0 = [
+	@AA2, 	{
+		when = "216";
+		duration = "2027553";
+		type = "tts";
+		code = "3";
+		data = "CFBVz";
+
+	}, 	{
+		when = "719";
+		duration = "8999529";
+		type = "tts";
+		code = "32";
+		data = "izyGa";
+
+	}, 	{
+		when = "1024";
+		duration = "4904130";
+		type = "mp3";
+		code = "2";
+		data = "cTb6MkpDAGJWrVdxe3rg";
+
+	}
+];
+AA6 = [
+	@AA8, 	{
+		when = "21";
+		duration = "4892967";
+		type = "light";
+		code = "37";
+
+	}, 	{
+		when = "1026";
+		duration = "1905609";
+		type = "audio";
+		code = "46";
+
+	}, 	{
+		when = "5027";
+		duration = "4074479";
+		type = "tts";
+		code = "5";
+		data = "kzSDM";
+
+	}, 	@AA13, 	{
+		when = "6013";
+		duration = "6953766";
+		type = "screen";
+		code = "46";
+		data = "78605, 70814";
+
+	}
+];
+AA15 = [
+	@AA17, 	{
+		when = "92";
+		duration = "3174455";
+		type = "mp3";
+		code = "42";
+		data = "xZnMnXuVXcVsQnhhT8Ic";
+
+	}
+];
+
+main:
+ @AA0 => @AA6 => @AA15 ;
+
